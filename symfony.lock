@@ -92,6 +92,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
+    "egulias/email-validator": {
+        "version": "3.1.2"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.7"
     },
@@ -359,6 +362,9 @@
             "ref": "30dba2f9b719f21b497a6302f41aac07f9079e13"
         }
     },
+    "sonata-project/user-bundle": {
+        "version": "5.0.0"
+    },
     "symfony/asset": {
         "version": "v5.4.7"
     },
@@ -482,6 +488,18 @@
     },
     "symfony/intl": {
         "version": "v5.4.5"
+    },
+    "symfony/mailer": {
+        "version": "5.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "97a61eabb351d7f6cb7702039bcfe07fe9d7e03c"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
+        ]
     },
     "symfony/maker-bundle": {
         "version": "1.38",

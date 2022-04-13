@@ -23,7 +23,7 @@ class ArticleFixture extends BaseFixture
 
     protected function loadData(ObjectManager $manager)
     {
-        $this->createMany(400, 'main_news', function () {
+        $this->createMany(100, 'main_news', function () {
             $news = new Article();
 
             $news
