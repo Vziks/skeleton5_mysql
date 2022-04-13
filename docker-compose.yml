@@ -1,0 +1,96 @@
+version: '3.2'
+
+services:
+    symfony:
+        build:
+            context: .
+            dockerfile: docker/symfony/Dockerfile
+        container_name: symfony-skeleton.symfony
+        ports:
+            - "83:80"
+        volumes:
+            - .:/var/www/html
+        networks:
+            - backend
+    nginx:
+        image: nginx:mainline-alpine
+        hostname: mysite.local
+        container_name: symfony-skeleton.nginx
+        env_file:
+            - .env
+        volumes:
+            - ./docker/sites.nginx.conf:/etc/nginx/nginx.conf:ro
+            - ./docker/dev.nginx.conf:/etc/nginx/dev.conf:ro
+            - ./docker/rules.vhost.nginx.conf:/etc/nginx/rules.vhost.conf:ro
+            - ./public:/var/www/html/public
+        extra_hosts:
+            - "my.webapp:127.0.0.1"
+            - "mysite.local:127.0.0.1"
+        ports:
+            - "8000:80"
+        links:
+            - symfony:phphost
+        networks:
+            - backend
+
+    database-pqsl:
+        image: 'postgres:12.9'
+        #        restart: always
+        container_name: symfony-skeleton.psql
+        volumes:
+            - ./docker/postgresql:/var/lib/postgresql/data:consistent
+        ports:
+            - '15432:5432'
+        environment:
+            - PGDATA=/var/lib/postgresql/data/pgdata
+            - POSTGRES_DB=symfony
+            - POSTGRES_USER=symfony
+            - POSTGRES_PASSWORD=password
+        networks:
+            - backend
+
+# uncomment if needed
+#    mysql:
+#        platform: linux/x86_64
+#        image: mysql:5.7
+#        container_name: symfony-skeleton.mysql
+#        environment:
+#            MYSQL_ROOT_PASSWORD: root_pwd_test
+#            MYSQL_DATABASE: sf4
+#            MYSQL_USER: sf4user
+#            MYSQL_PASSWORD: sf4pwd
+#        volumes:
+#            - ./db:/var/lib/mysql
+#        ports:
+#            - "33069:3306"
+#        networks:
+#            backend:
+#                aliases:
+#                    - mysql-host
+#
+#    phpmyadmin:
+#        image: phpmyadmin/phpmyadmin
+#        container_name: symfony-skeleton.phpmyadmin
+#        environment:
+#            PMA_HOST: mysql-host
+#        ports:
+#            - "3309:80"
+#        networks:
+#            - backend
+
+# uncomment if needed
+#    elasticsearch:
+#        container_name: symfony-skeleton.elasticsearch
+#        image: webhippie/elasticsearch:6.4
+#        platform: linux/x86_64
+#        #    image: elasticsearch:5.6-alpine
+#        environment:
+#            discovery.type: "single-node"
+#        ports:
+#            - "9205:9200"
+#        networks:
+#            - backend
+
+networks:
+    backend:
+        driver: bridge
