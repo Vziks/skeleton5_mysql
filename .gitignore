@@ -57,6 +57,9 @@ docker-compose.override.yml
 
 /web/bundles/
 
+
+/public/uploads/media/*
+!public/uploads/media/.gitkeep
 /.bundle/
 /app/bootstrap.php.cache
 /app/cache/*

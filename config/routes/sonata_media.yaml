@@ -1,4 +1,4 @@
-#xsonata_media_gallery:
+#sonata_media_gallery:
 #    resource: '@SonataMediaBundle/Resources/config/routing/gallery.xml'
 #    prefix: /media/gallery
 

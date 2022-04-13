@@ -107,6 +107,9 @@
             "config/packages/fos_rest.yaml"
         ]
     },
+    "fzaninotto/faker": {
+        "version": "v1.9.2"
+    },
     "imagine/imagine": {
         "version": "1.3.2"
     },
