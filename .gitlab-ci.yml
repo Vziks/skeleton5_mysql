@@ -1,0 +1,37 @@
+stages:
+  - validation
+
+variables:
+  COMPOSER_CACHE_DIR: "/cache/php-composer"
+  SECURITY_CHECKER: "https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest"
+
+before_script:
+  - rm -f /usr/local/etc/php/conf.d/xdebug.ini
+  - echo 'date.timezone=Europe/Moscow' >> /usr/local/etc/php/conf.d/extra.ini
+  - echo 'memory_limit = 2G' >> /usr/local/etc/php/conf.d/extra.ini
+  - sudo chown -R www-data:www-data ./
+
+validation_check:
+  stage: validation
+  image: vziks/php-docker
+  allow_failure: false
+  dependencies: []
+  script:
+    - composer install --profile --prefer-dist --no-interaction --no-scripts
+    - composer validate
+    - bin/console doctrine:schema:validate --skip-sync
+  cache:
+    key: ${CI_PROJECT_PATH_SLUG}
+    paths:
+      - vendor/
+
+security_check:
+  stage: validation
+  image: vziks/php-docker
+  allow_failure: true
+  dependencies: []
+  script:
+    - curl -s $SECURITY_CHECKER | grep "linux_386" | grep "browser_download_url" | curl -L -o local-php-security-checker $(cut -d '"' -f 4)
+    - chmod +x 'local-php-security-checker'
+    - ./local-php-security-checker
+  cache: {}
