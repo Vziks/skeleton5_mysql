@@ -13,7 +13,7 @@ before_script:
 
 validation_check:
   stage: validation
-  image: vziks/docker-php
+  image: vziks/php-docker
   allow_failure: false
   dependencies: []
   script:
@@ -27,7 +27,7 @@ validation_check:
 
 security_check:
   stage: validation
-  image: vziks/docker-php
+  image: vziks/php-docker
   allow_failure: true
   dependencies: []
   script:
