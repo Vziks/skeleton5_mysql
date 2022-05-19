@@ -1,37 +1,74 @@
 stages:
-  - validation
+    - validation
+    - test_php74
 
 variables:
-  COMPOSER_CACHE_DIR: "/cache/php-composer"
-  SECURITY_CHECKER: "https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest"
+    MYSQL_DATABASE: "skeleton4"
+    MYSQL_ROOT_PASSWORD: "supersecret"
+    COMPOSER_CACHE_DIR: "/cache/php-composer"
+    NPM_CONFIG_CACHE: "/cache/node-npm"
+    BUNDLE_PATH: "/cache/ruby-gems"
+    SECURITY_CHECKER: "https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest"
+
+    POSTGRES_DB: "app_testing"
+    POSTGRES_USER: "runner"
+    POSTGRES_PASSWORD: "supersecret"
+    POSTGRES_HOST_AUTH_METHOD: trust
 
 before_script:
-  - rm -f /usr/local/etc/php/conf.d/xdebug.ini
-  - echo 'date.timezone=Europe/Moscow' >> /usr/local/etc/php/conf.d/extra.ini
-  - echo 'memory_limit = 2G' >> /usr/local/etc/php/conf.d/extra.ini
-  - sudo chown -R www-data:www-data ./
+    - rm -f /usr/local/etc/php/conf.d/xdebug.ini
+    - echo 'date.timezone=Europe/Moscow' >> /usr/local/etc/php/conf.d/extra.ini
+    - echo 'memory_limit = 2G' >> /usr/local/etc/php/conf.d/extra.ini
+    - sudo chown -R www-data:www-data ./
 
 validation_check:
-  stage: validation
-  image: vziks/php-docker
-  allow_failure: false
-  dependencies: []
-  script:
-    - composer install --profile --prefer-dist --no-interaction --no-scripts
-    - composer validate
-    - bin/console doctrine:schema:validate --skip-sync
-  cache:
-    key: ${CI_PROJECT_PATH_SLUG}
-    paths:
-      - vendor/
+    stage: validation
+    image: vziks/php-docker
+    services:
+        - postgres:12.2-alpine
+    allow_failure: false
+    dependencies: [ ]
+    script:
+        - composer install --profile --prefer-dist --no-interaction --no-scripts
+        - composer validate
+    #        - bin/console doctrine:schema:validate --skip-sync
+    cache:
+        key: ${CI_PROJECT_PATH_SLUG}
+        paths:
+            - vendor/
 
 security_check:
-  stage: validation
-  image: vziks/php-docker
-  allow_failure: true
-  dependencies: []
-  script:
-    - curl -s $SECURITY_CHECKER | grep "linux_386" | grep "browser_download_url" | curl -L -o local-php-security-checker $(cut -d '"' -f 4)
-    - chmod +x 'local-php-security-checker'
-    - ./local-php-security-checker
-  cache: {}
+    stage: validation
+    image: vziks/php-docker
+    allow_failure: true
+    dependencies: [ ]
+    script:
+        - curl -s $SECURITY_CHECKER | grep "linux_386" | grep "browser_download_url" | curl -L -o local-php-security-checker $(cut -d '"' -f 4)
+        - chmod +x 'local-php-security-checker'
+        - ./local-php-security-checker
+    cache: { }
+
+.phpunit: &phpunit
+    allow_failure: false
+    script:
+        - composer install --profile --prefer-dist -n
+        - ./bin/setup-test.sh
+        - ./bin/console doctrine:schema:validate -e test
+        - ./vendor/bin/simple-phpunit -c phpunit.xml
+    cache:
+        key: ${CI_PROJECT_PATH_SLUG}
+        policy: pull
+        paths:
+            - vendor/
+
+phpunit_74_psg12:
+    stage: test_php74
+    image: vziks/php-docker
+    services:
+        - postgres:12.2-alpine
+    variables:
+        POSTGRES_DB: app_testing
+        POSTGRES_USER: runner
+        POSTGRES_PASSWORD: ''
+        POSTGRES_HOST_AUTH_METHOD: trust
+    <<: *phpunit
