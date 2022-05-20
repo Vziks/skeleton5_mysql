@@ -39,13 +39,11 @@ validation_check:
 
 security_check:
     stage: validation
-    image: vziks/php-docker
+    image: vziks/phpcommon
     allow_failure: true
     dependencies: [ ]
     script:
-        - curl -s $SECURITY_CHECKER | grep "linux_386" | grep "browser_download_url" | curl -L -o local-php-security-checker $(cut -d '"' -f 4)
-        - chmod +x 'local-php-security-checker'
-        - ./local-php-security-checker
+        - symfony security:check
     cache: { }
     tags:
         - linux
