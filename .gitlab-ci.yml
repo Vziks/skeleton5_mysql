@@ -39,7 +39,7 @@ validation_check:
 
 security_check:
     stage: validation
-    image: vziks/php-common
+    image: vziks/phpcommon
     allow_failure: true
     dependencies: [ ]
     script:
