@@ -43,7 +43,9 @@ security_check:
     allow_failure: true
     dependencies: [ ]
     script:
-        - symfony security:check
+        - curl -s $SECURITY_CHECKER | grep "linux_386" | grep "browser_download_url" | curl -L -o local-php-security-checker $(cut -d '"' -f 4)
+        - chmod +x 'local-php-security-checker'
+        - ./local-php-security-checker
     cache: { }
     tags:
         - linux
