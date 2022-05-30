@@ -24,6 +24,8 @@ before_script:
 validation_check:
     stage: validation
     image: vziks/php-common:7.4
+    services:
+        - mysql:5.7
     allow_failure: false
     dependencies: [ ]
     script:
