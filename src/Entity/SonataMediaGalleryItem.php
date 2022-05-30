@@ -25,5 +25,4 @@ class SonataMediaGalleryItem extends BaseGalleryItem
     {
         return $this->id;
     }
-
 }

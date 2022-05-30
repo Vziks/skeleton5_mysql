@@ -3,7 +3,6 @@
 namespace App\Security;
 
 use App\Form\AdminLoginForm;
-use App\Entity\UserAdmin;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +37,7 @@ class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator implements 
 
     public function supports(Request $request): bool
     {
-        return $request->attributes->get('_route') === 'admin_login' && $request->isMethod('POST');
+        return 'admin_login' === $request->attributes->get('_route') && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request): array
@@ -62,7 +61,7 @@ class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator implements 
 
     public function checkCredentials($credentials, UserInterface $user): bool
     {
-        /** @var PasswordAuthenticatedUserInterface $user */
+        /* @var PasswordAuthenticatedUserInterface $user */
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 

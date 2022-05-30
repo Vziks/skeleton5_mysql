@@ -11,7 +11,6 @@ use Sonata\MediaBundle\Entity\BaseMedia;
  */
 class SonataMediaMedia extends BaseMedia
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

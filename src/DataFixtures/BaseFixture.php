@@ -15,7 +15,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 /**
  * Abstract class BaseFixture.
  *
- *
  * @author Anton Prokhorov <vziks@live.ru>
  */
 abstract class BaseFixture extends Fixture implements ContainerAwareInterface, OrderedFixtureInterface
@@ -29,15 +28,10 @@ abstract class BaseFixture extends Fixture implements ContainerAwareInterface, O
     private array $referencesIndex = [];
 
     /**
-     * @param ObjectManager $manager
-     *
      * @return mixed
      */
     abstract protected function loadData(ObjectManager $manager);
 
-    /**
-     * @param ObjectManager $manager
-     */
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
@@ -56,17 +50,14 @@ abstract class BaseFixture extends Fixture implements ContainerAwareInterface, O
      *           return $user;
      *      });
      *
-     * @param int      $count
-     * @param string   $groupName tag these created objects with this group name,
-     *                            and use this later with getRandomReference(s)
-     *                            to fetch only from this specific group
-     * @param callable $factory
+     * @param string $groupName tag these created objects with this group name,
+     *                          and use this later with getRandomReference(s)
+     *                          to fetch only from this specific group
      */
     protected function createMany(int $count, string $groupName, callable $factory): void
     {
-        for ($i = 0; $i < $count; ++$i) {
+        for ($i = 0; $i < $count; $i++) {
             $entity = $factory($i);
-
             if (null === $entity) {
                 throw new \LogicException(
                     'Did you forget to return the entity object from your callback to BaseFixture::createMany()?'
@@ -79,11 +70,6 @@ abstract class BaseFixture extends Fixture implements ContainerAwareInterface, O
         }
     }
 
-    /**
-     * @param string $groupName
-     *
-     * @return object
-     */
     protected function getRandomReference(string $groupName): object
     {
         if (!isset($this->referencesIndex[$groupName])) {
@@ -107,12 +93,6 @@ abstract class BaseFixture extends Fixture implements ContainerAwareInterface, O
         return $this->getReference($randomReferenceKey);
     }
 
-    /**
-     * @param string $className
-     * @param int    $count
-     *
-     * @return array
-     */
     protected function getRandomReferences(string $className, int $count): array
     {
         $references = [];
@@ -123,12 +103,6 @@ abstract class BaseFixture extends Fixture implements ContainerAwareInterface, O
         return $references;
     }
 
-    /**
-     * @param $folderName
-     * @param $arrayImages
-     *
-     * @return SonataMediaMedia
-     */
     protected function fakeUploadImage($folderName, $arrayImages, $context): SonataMediaMedia
     {
         return ResourceToMediaHelper::fromFile(
@@ -138,12 +112,6 @@ abstract class BaseFixture extends Fixture implements ContainerAwareInterface, O
         );
     }
 
-
-    /**
-     * @param $class
-     *
-     * @return string
-     */
     protected function getShortClassName($class): string
     {
         return (new \ReflectionClass($class))->getShortName();

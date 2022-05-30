@@ -18,7 +18,6 @@ class MainController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route("/folder/", name="app_folder")
      */

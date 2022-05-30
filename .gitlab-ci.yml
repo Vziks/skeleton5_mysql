@@ -9,7 +9,6 @@ variables:
     NPM_CONFIG_CACHE: "/cache/node-npm"
     BUNDLE_PATH: "/cache/ruby-gems"
     SECURITY_CHECKER: "https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest"
-
     POSTGRES_DB: "app_testing"
     POSTGRES_USER: "runner"
     POSTGRES_PASSWORD: "supersecret"
@@ -47,8 +46,16 @@ security_check:
         - chmod +x 'local-php-security-checker'
         - ./local-php-security-checker
     cache: { }
-    tags:
-        - linux
+
+codestyle_check:
+    stage: validation
+    image: vziks/php-common:7.4
+    allow_failure: true
+    dependencies: [ ]
+    script:
+        - composer install --profile --prefer-dist --no-interaction --no-scripts
+        - PHP_CS_FIXER_FUTURE_MODE=1 php ./vendor/bin/php-cs-fixer fix --dry-run -v --diff; echo $?
+    cache: { }
 
 .phpunit: &phpunit
     allow_failure: false

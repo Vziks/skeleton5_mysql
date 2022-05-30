@@ -9,7 +9,6 @@ use Sonata\MediaBundle\Entity\BaseGallery;
  * @ORM\Entity
  * @ORM\Table(name="media__gallery")
  */
-
 class SonataMediaGallery extends BaseGallery
 {
     /**
@@ -26,6 +25,4 @@ class SonataMediaGallery extends BaseGallery
     {
         return $this->id;
     }
-
-
 }
