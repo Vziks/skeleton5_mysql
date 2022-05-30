@@ -25,7 +25,4 @@ class SonataUserUser extends BaseUser
     {
         return $this->id;
     }
-
-
-
 }

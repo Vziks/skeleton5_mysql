@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\SonataMediaMedia;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -39,8 +38,6 @@ class Article
     private ?\DateTimeInterface $datePublication;
 
     /**
-     * @var SonataMediaMedia
-     *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\SonataMediaMedia",
      *     cascade={"remove", "persist"},
@@ -103,20 +100,13 @@ class Article
         return $this;
     }
 
-    /**
-     * @return \App\Entity\SonataMediaMedia
-     */
-    public function getImage(): \App\Entity\SonataMediaMedia
+    public function getImage(): SonataMediaMedia
     {
         return $this->image;
     }
 
-    /**
-     * @param \App\Entity\SonataMediaMedia $image
-     */
-    public function setImage(\App\Entity\SonataMediaMedia $image): void
+    public function setImage(SonataMediaMedia $image): void
     {
         $this->image = $image;
     }
-
 }

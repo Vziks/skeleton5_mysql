@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Admin;
 
@@ -13,7 +13,6 @@ use Sonata\MediaBundle\Form\Type\MediaType;
 
 final class ArticleAdmin extends AbstractAdmin
 {
-
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -21,15 +20,14 @@ final class ArticleAdmin extends AbstractAdmin
             ->add('name')
             ->add('description')
             ->add('text')
-            ->add('datePublication')
-            ;
+            ->add('datePublication');
     }
 
     protected function configureListFields(ListMapper $list): void
     {
         $list
             ->add('id')
-            ->add('name',null, ['editable'=>true], ['editable'=>true])
+            ->add('name', null, ['editable' => true], ['editable' => true])
             ->add('datePublication')
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
@@ -56,8 +54,7 @@ final class ArticleAdmin extends AbstractAdmin
                 ]
             )
             ->add('text')
-            ->add('datePublication')
-            ;
+            ->add('datePublication');
     }
 
     protected function configureShowFields(ShowMapper $show): void
@@ -67,7 +64,6 @@ final class ArticleAdmin extends AbstractAdmin
             ->add('name')
             ->add('description')
             ->add('text')
-            ->add('datePublication')
-            ;
+            ->add('datePublication');
     }
 }

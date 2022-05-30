@@ -8,7 +8,6 @@ use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class UserProvider implements UserProviderInterface
 {
@@ -24,12 +23,7 @@ class UserProvider implements UserProviderInterface
         $user = $this->findOneUserBy(['email' => $username]);
 
         if (!$user) {
-            throw new UserNotFoundException(
-                sprintf(
-                    'User with "%s" email does not exist.',
-                    $username
-                )
-            );
+            throw new UserNotFoundException(sprintf('User with "%s" email does not exist.', $username));
         }
 
         return $user;
@@ -47,12 +41,7 @@ class UserProvider implements UserProviderInterface
         assert($user instanceof UserAdmin);
 
         if (null === $reloadedUser = $this->findOneUserBy(['id' => $user->getId()])) {
-            throw new UserNotFoundException(
-                sprintf(
-                    'User with ID "%s" could not be reloaded.',
-                    $user->getId()
-                )
-            );
+            throw new UserNotFoundException(sprintf('User with ID "%s" could not be reloaded.', $user->getId()));
         }
 
         return $reloadedUser;
@@ -60,7 +49,7 @@ class UserProvider implements UserProviderInterface
 
     public function supportsClass($class): bool
     {
-        return $class === UserAdmin::class;
+        return UserAdmin::class === $class;
     }
 
     /**
@@ -68,7 +57,6 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByIdentifier(string $identifier): ?UserAdmin
     {
-
         return $this->entityManager->createQuery(
             'SELECT u
                 FROM App\Entity\User u
@@ -78,6 +66,4 @@ class UserProvider implements UserProviderInterface
             ->setParameter('query', $identifier)
             ->getOneOrNullResult();
     }
-
-
 }

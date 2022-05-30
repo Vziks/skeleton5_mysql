@@ -41,8 +41,6 @@ class ArticleFixture extends BaseFixture
 
     /**
      * Get the order of this fixture.
-     *
-     * @return int
      */
     public function getOrder(): int
     {

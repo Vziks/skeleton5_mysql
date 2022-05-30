@@ -6,7 +6,6 @@ use App\Entity\UserAdmin;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserAdminFixture extends Fixture
 {
@@ -27,7 +26,6 @@ class UserAdminFixture extends Fixture
 
     public function getFakeAdmin(): UserAdmin
     {
-
         $user = new UserAdmin();
 
         return $user

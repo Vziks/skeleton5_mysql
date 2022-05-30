@@ -3,20 +3,11 @@
 namespace App\DataFixtures\Helper;
 
 use App\Entity\SonataMediaMedia;
-use Sonata\Doctrine\Model\ManagerInterface;
 use Sonata\MediaBundle\Model\MediaManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ResourceToMediaHelper
 {
-    /**
-     * @param string           $url
-     * @param MediaManagerInterface $mediaManager
-     * @param string           $context
-     * @param string           $provider
-     *
-     * @return SonataMediaMedia
-     */
     public static function fromUrl(
         string $url,
         MediaManagerInterface $mediaManager,
@@ -43,14 +34,6 @@ class ResourceToMediaHelper
         return $media;
     }
 
-    /**
-     * @param string           $filename
-     * @param MediaManagerInterface $mediaManager
-     * @param string           $context
-     * @param string           $provider
-     *
-     * @return SonataMediaMedia
-     */
     public static function fromFile(
         string $filename,
         MediaManagerInterface $mediaManager,

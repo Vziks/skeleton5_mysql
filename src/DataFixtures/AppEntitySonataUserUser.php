@@ -26,7 +26,6 @@ class AppEntitySonataUserUser extends Fixture
 
     public function getAdmin(): SonataUserUser
     {
-
         $user = new SonataUserUser();
 
         $user->setEmail('admin');
