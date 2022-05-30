@@ -5,6 +5,7 @@ stages:
 variables:
     MYSQL_DATABASE: "skeleton4"
     MYSQL_ROOT_PASSWORD: "supersecret"
+    DATABASE_URL: "mysql://root:supersecret@mysql:3306/skeleton4"
     COMPOSER_CACHE_DIR: "/cache/php-composer"
     NPM_CONFIG_CACHE: "/cache/node-npm"
     BUNDLE_PATH: "/cache/ruby-gems"
@@ -23,8 +24,6 @@ before_script:
 validation_check:
     stage: validation
     image: vziks/php-common:7.4
-    services:
-        - postgres:12.2-alpine
     allow_failure: false
     dependencies: [ ]
     script:
@@ -70,14 +69,21 @@ codestyle_check:
         paths:
             - vendor/
 
-phpunit_74_psg12:
+#phpunit_74_psg12:
+#    stage: test_php74
+#    image: vziks/php-common:7.4
+#    services:
+#        - postgres:12.2-alpine
+#    variables:
+#        POSTGRES_DB: app_testing
+#        POSTGRES_USER: runner
+#        POSTGRES_PASSWORD: ''
+#        POSTGRES_HOST_AUTH_METHOD: trust
+#    <<: *phpunit
+
+phpunit_74_57:
     stage: test_php74
     image: vziks/php-common:7.4
     services:
-        - postgres:12.2-alpine
-    variables:
-        POSTGRES_DB: app_testing
-        POSTGRES_USER: runner
-        POSTGRES_PASSWORD: ''
-        POSTGRES_HOST_AUTH_METHOD: trust
+        - mysql:5.7
     <<: *phpunit
