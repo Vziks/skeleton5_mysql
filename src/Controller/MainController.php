@@ -8,9 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
-    /**
-     * @Route("/", name="app_main")
-     */
+    #[Route(path: '/', name: 'app_main', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('main/index.html.twig', [
@@ -18,9 +16,7 @@ class MainController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/folder/", name="app_folder")
-     */
+    #[Route(path: '/folder/', name: 'app_folder', methods: ['GET'])]
     public function folder(): Response
     {
         return $this->render('main/index.html.twig', [
