@@ -27,7 +27,7 @@ final class ArticleAdmin extends AbstractAdmin
     {
         $list
             ->add('id')
-            ->add('name', null, ['editable' => true], ['editable' => true])
+            ->add('name', null, ['editable' => true])
             ->add('datePublication')
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
