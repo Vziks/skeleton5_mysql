@@ -42,7 +42,7 @@ final class ArticleAdmin extends AbstractAdmin
     {
         $form
             ->add('name')
-            ->add('description')
+//            ->add('description')
             ->add(
                 'image',
                 MediaType::class,
