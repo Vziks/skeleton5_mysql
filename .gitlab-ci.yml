@@ -83,7 +83,7 @@ codestyle_check:
 #        POSTGRES_HOST_AUTH_METHOD: trust
 #    <<: *phpunit
 
-phpunit_74_57:
+phpunit_81_57:
     stage: test_php81
     image: vziks/php-common:8.1
     services:
